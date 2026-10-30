@@ -1,0 +1,13 @@
+{
+    "sketch": "esp32-board-info/esp32-board-info.ino",
+    "port": "/dev/tty.usbserial-0001",
+    "board": "esp32:esp32:esp32",
+    "output": "../build/esp32-hx711.TEST",
+    "configuration": "JTAGAdapter=default,PSRAM=disabled,PartitionScheme=min_spiffs,CPUFreq=240,FlashMode=qio,FlashFreq=80,FlashSize=4M,UploadSpeed=921600,LoopCore=1,EventsCore=1,DebugLevel=none,EraseFlash=none,ZigbeeMode=default",
+    "buildPreferences": [
+        [
+            "build.extra_flags",
+            "-DQUIET_MODE=0 -DDEBUG_MODE=1 -DLOG_INTERVAL_MS=30000 -DESP32=1"
+        ]
+    ]
+}

@@ -1,0 +1,14 @@
+{
+    "search.exclude": {
+        "../libraries/**": true,
+        "../build/**": true,
+        "**/.git/**": true,
+    },
+    "C_Cpp.files.exclude": {
+        "/": true,
+        "**/.vscode": true,
+        "../libraries/**": true,
+        "../build/**": true,
+    },
+    "C_Cpp.errorSquiggles": "disabled"
+}
