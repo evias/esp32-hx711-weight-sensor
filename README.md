@@ -49,7 +49,7 @@ contains the following structure:
 }
 ```
 
-## Hardware wiring
+### Hardware wiring
 
 | ESP32 Pin | GPIO Number | Connected To |
 |-----------|-------------|--------------|
@@ -57,6 +57,25 @@ contains the following structure:
 | **5V** | - | HX711 VCC |
 | **RX2** | GPIO 16 | HX711 DT |
 | **D4** | GPIO 4 | HX711 SCK |
+
+### Build flags
+
+In `.vscode/arduino.json`, you may see `buildPreferences` and a row that lists
+the configured build flags for the firmware. Following list explains the flags:
+
+| Build flag | Example | Description |
+|------------|---------|-------------|
+| `DEBUG_MODE` | `-DDEBUG_MODE=1` | Activates debug mode, i.e. verbose debug logs. |
+| `QUIET_MODE` | `-DQUIET_MODE=1` | Activates quiet mode, i.e. nothing will be logged. |
+| `WIFI_SSID` | `-DWIFI_SSID="Default"` | IMPORTANT: Set your WiFi SSID in `.vscode/arduino.json` |
+| `WIFI_PASS` | `-DWIFI_PASS="Default"` | IMPORTANT: Set your WiFi password in `.vscode/arduino.json` |
+| `WEBHOOK_URL` | `-DWEBHOOK_URL="http://..."` | Set a webhook URL. Set to empty to disable the webhook. |
+| `INTERVAL` | `-DINTERVAL=1000` | Set a custom interval between readings, in milliseconds (ms). Defaults to 500ms. |
+| `BATCH_SIZE` | `-DBATCH_SIZE=1` | Set a custom batch size. Determines how many readings are sent per batch. Defaults to 10. |
+| `ESP32` | `-DESP32=1` | Flag to further optimize the firmware for ESP32 development boards. |
+
+Note that to disable webhooks, you must *explicitely* set the WEBHOOK_URL to an empty string,
+i.e. use `-DWEBHOOK_URL=""` in the `.vscode/arduino.json` build flags.
 
 ## License
 

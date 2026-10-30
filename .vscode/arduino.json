@@ -7,7 +7,7 @@
     "buildPreferences": [
         [
             "build.extra_flags",
-            "-DWIFI_SSID=\"Default\" -DWIFI_PASS=\"Default\" -DWEBHOOK_URL=\"http://homeassistant.local:8123/api/webhook/sensors\" -DQUIET_MODE=0 -DDEBUG_MODE=1 -DESP32=1"
+            "-DWIFI_SSID=\"Default\" -DWIFI_PASS=\"Default\" -DWEBHOOK_URL=\"http://homeassistant.local:8123/api/webhook/sensors\" -DBATCH_SIZE=20 -DINTERVAL=1000 -DQUIET_MODE=0 -DDEBUG_MODE=1 -DESP32=1"
         ]
     ]
 }
