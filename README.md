@@ -67,6 +67,7 @@ the configured build flags for the firmware. Following list explains the flags:
 |------------|---------|-------------|
 | `DEBUG_MODE` | `-DDEBUG_MODE=1` | Activates debug mode, i.e. verbose debug logs. |
 | `QUIET_MODE` | `-DQUIET_MODE=1` | Activates quiet mode, i.e. nothing will be logged. |
+| `PREFIX` | `-DPREFIX="sensor.my_weight_sensor_"` | Sets a name prefix, note that 4-bytes of the mac address will be added at the end. |
 | `WIFI_SSID` | `-DWIFI_SSID="Default"` | IMPORTANT: Set your WiFi SSID in `.vscode/arduino.json` |
 | `WIFI_PASS` | `-DWIFI_PASS="Default"` | IMPORTANT: Set your WiFi password in `.vscode/arduino.json` |
 | `WEBHOOK_URL` | `-DWEBHOOK_URL="http://..."` | Set a webhook URL. Set to empty to disable the webhook. |
