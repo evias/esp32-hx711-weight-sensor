@@ -29,8 +29,8 @@ void setup() {
     uint8_t mac[6];
     esp_wifi_get_mac(WIFI_IF_STA, mac);
 
-    char mac_id[4];
-    sprintf(mac_id, "%02x%02x", mac[4], mac[5]);
+    char mac_id[5];
+    snprintf(mac_id, sizeof(mac_id), "%02x%02x", mac[4], mac[5]);
 
     // e.g. with PREFIX="sensor.weight_", name="sensor.weight_aabb".
     String name = String(String(PREFIX)+String(mac_id));

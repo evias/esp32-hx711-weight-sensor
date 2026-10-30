@@ -1,0 +1,8 @@
+-DPREFIX="\"sensor.biscuit_esp32_\""
+-DWIFI_SSID="\"Default\""
+-DWIFI_PASS="\"Default\""
+-DWEBHOOK_URL="\"http://homeassistant.local:8123/api/webhook/sensors\""
+-DBATCH_SIZE=20
+-DINTERVAL=1000
+-DQUIET_MODE=0
+-DDEBUG_MODE=1

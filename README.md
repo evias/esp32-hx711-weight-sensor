@@ -73,10 +73,30 @@ the configured build flags for the firmware. Following list explains the flags:
 | `WEBHOOK_URL` | `-DWEBHOOK_URL="http://..."` | Set a webhook URL. Set to empty to disable the webhook. |
 | `INTERVAL` | `-DINTERVAL=1000` | Set a custom interval between readings, in milliseconds (ms). Defaults to 500ms. |
 | `BATCH_SIZE` | `-DBATCH_SIZE=1` | Set a custom batch size. Determines how many readings are sent per batch. Defaults to 10. |
-| `ESP32` | `-DESP32=1` | Flag to further optimize the firmware for ESP32 development boards. |
+| `ESP32` | `-DESP32=1` | **Use only for VSCode!** Flag to further optimize the firmware for ESP32 development boards. |
 
 Note that to disable webhooks, you must *explicitely* set the WEBHOOK_URL to an empty string,
 i.e. use `-DWEBHOOK_URL=""` in the `.vscode/arduino.json` build flags.
+
+### Troubleshoot
+
+When you face **compilation warnings** like the ones shown below, make sure to
+edit either the `.vscode/arduino.json` file if you are using VSCode with the
+vscode-arduino plugin or the `esp32-hx711/build_opt` file if you are using Arduino IDE.
+
+```bash
+In file included from .../esp32-hx711/src/smart_scale.cpp:7:
+.../esp32-hx711/src/constants.h:16:6: warning: #warning "PREFIX is NOT defined, fallback to 'sensor.weight_sensor_'." [-Wcpp]
+   16 |     #warning "PREFIX is NOT defined, fallback to 'sensor.weight_sensor_'."
+      |      ^~~~~~~
+.../esp32-hx711/src/constants.h:25:6: warning: #warning "WIFI_SSID is NOT defined. Please change it inside the file esp32-hx711/build_opt and re-compile" [-Wcpp]
+   25 |     #warning "WIFI_SSID is NOT defined. Please change it inside the file esp32-hx711/build_opt and re-compile"
+      |      ^~~~~~~
+.../esp32-hx711/src/constants.h:34:6: warning: #warning "WIFI_PASS is NOT defined. Please change it inside the file esp32-hx711/build_opt and re-compile" [-Wcpp]
+   34 |     #warning "WIFI_PASS is NOT defined. Please change it inside the file esp32-hx711/build_opt and re-compile"
+```
+
+Read the [Build flags](#build-flags) section for a description of these flags.
 
 ## License
 

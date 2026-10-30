@@ -19,7 +19,7 @@ SmartScale::SmartScale(const char* name, const char* version)
       has_module_(false),
       batch_({})
 {
-    webhook_enabled_  = URL_DIAGNOSTIC_REPORTS != "";
+    webhook_enabled_  = strcmp(URL_DIAGNOSTIC_REPORTS, "") != 0;
     http_batch_size_  = ESP32HX711_BATCH_SIZE;
     is_quiet_mode_    = ESP32HX711_QUIET_ENABLED == 1;
     interval_between_ = ESP32HX711_INTERVAL + DEBOUNCE_DELAY;
@@ -205,7 +205,9 @@ void SmartScale::setupWiFiConnection()
 
     // Save credentials if necessary
     // See .vscode/arduino.json to update WIFI_SSID, WIFI_PASS.
-    if (ssid.isEmpty() && ESP32HX711_WIFI_SSID != "Default" && ESP32HX711_WIFI_PASS != "Default") {
+    bool has_wifi_ssid = 0 != strcmp(ESP32HX711_WIFI_SSID, "Default");
+    bool has_wifi_pass = 0 != strcmp(ESP32HX711_WIFI_PASS, "Default");
+    if (ssid.isEmpty() && has_wifi_ssid && has_wifi_pass) {
         settings_.begin("wifi", false);  // false = read/write
         settings_.putString("ssid", ESP32HX711_WIFI_SSID);
         settings_.putString("password", ESP32HX711_WIFI_PASS);
@@ -281,15 +283,14 @@ void SmartScale::ensureWiFiConnected()
 /// @details CAUTION: Calling this method will clear the current batch.
 const String& SmartScale::consumeBatch()
 {
-    String data("[");
+    String data("");
     for (int i = 0, m = batch_.size(); i < m; i++) {
         data += batch_[i].ToString();
         if (i + 1 < m) data += ",";
     }
-    data += "]";
     batch_.clear(); // BATCH is now empty
 
-    return data;
+    return String("[") + data.c_str() + "]";
 }
 
 /// @brief The sendHTTPRequest method sends a HTTP request to a HASS webhook.

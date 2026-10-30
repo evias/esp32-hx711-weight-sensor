@@ -13,6 +13,7 @@
  */
 #ifndef PREFIX
     #define PREFIX "sensor.weight_sensor_"
+    #warning "PREFIX is NOT defined, fallback to 'sensor.weight_sensor_'."
 #endif
 
 /**
@@ -21,6 +22,7 @@
  */
 #ifndef WIFI_SSID
     #define WIFI_SSID "Default"
+    #warning "WIFI_SSID is NOT defined. Please change it inside the file esp32-hx711/build_opt and re-compile"
 #endif
 
 /**
@@ -29,6 +31,7 @@
  */
 #ifndef WIFI_PASS
     #define WIFI_PASS "Default"
+    #warning "WIFI_PASS is NOT defined. Please change it inside the file esp32-hx711/build_opt and re-compile"
 #endif
 
 /**
