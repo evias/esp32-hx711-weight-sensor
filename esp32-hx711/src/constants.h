@@ -89,10 +89,16 @@ constexpr unsigned long DEBOUNCE_DELAY = 50; // Always added to interval!
 constexpr unsigned long HTTP_TIMEOUT = 5000;  // 5 seconds HTTP request timeout
 
 /**
- * 2-pin Press Button
+ * HX711 module with 50 half-bridge Load Cell
  *
- * esp32(D15) -> B(1)
- * esp32(GND) -> B(2)
+ * LC(Red) -> HX(E+)
+ * LC(White) -> HX(A+)
+ * LC(Black) -> HX(A-)
+ *
+ * esp32(3v3) -> HX(VCC)
+ * esp32(GND) -> HX(GND)
+ * esp32(RX2) -> HX(DT)
+ * esp32(D4)  -> HX(SCK)
  **/
 const unsigned short LOADCELL_DOUT_PIN = 16;
 const unsigned short LOADCELL_SCK_PIN  = 4;

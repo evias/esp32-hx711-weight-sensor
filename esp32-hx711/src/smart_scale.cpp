@@ -220,7 +220,7 @@ void SmartScale::setupWiFiConnection()
 
     // Connect to WiFi if possible
     if (!ssid.isEmpty()) {
-        if constexpr(ESP32HX711_DEBUG_ENABLED) {
+        if (true == ESP32HX711_DEBUG_ENABLED) {
             Serial.print(String("Connecting to WiFi")); // don't \n!
         }
 
@@ -230,7 +230,7 @@ void SmartScale::setupWiFiConnection()
         bool isOnline = false;
         int  numAttempts = 0;
         while (!isOnline && !hasError && ++numAttempts < 10) {
-            if constexpr(ESP32HX711_DEBUG_ENABLED) {
+            if (true == ESP32HX711_DEBUG_ENABLED) {
                 Serial.print(String(".")); // don't \n!
             }
 

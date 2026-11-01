@@ -27,7 +27,7 @@ inline void formatElapsedTime(unsigned long ms, char* buffer) {
 /// @details The message displays only when build with `-DDEBUG_MODE=1`.
 /// @param message The message to send on serial port.
 inline void sendDebugMessage(String message) {
-    if constexpr(ESP32HX711_DEBUG_ENABLED) {
+    if (true == ESP32HX711_DEBUG_ENABLED) {
         unsigned long log_tz = millis();
         char dt[19] = ""; // 00000 00:00:00.000\0
         formatElapsedTime(log_tz, dt);
@@ -52,7 +52,7 @@ inline void sendErrorMessage(String message) {
 /// @param message The message to send on serial port.
 /// @param lvl The log level, e.g. INFO, WARN, etc.
 inline void sendMessage(String message, const char* lvl = "INFO") {
-    if constexpr(!ESP32HX711_QUIET_ENABLED) {
+    if (false == ESP32HX711_QUIET_ENABLED) {
         unsigned long log_tz = millis();
         char dt[19] = ""; // 00000 00:00:00.000\0
         formatElapsedTime(log_tz, dt);
