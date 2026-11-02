@@ -44,7 +44,7 @@ protected:
     void ensureWiFiConnected();
 
     bool sendHTTPRequest(const char* url, const char* data);
-    const String& consumeBatch();
+    String consumeBatch();
 
 private:
     // Devices connections

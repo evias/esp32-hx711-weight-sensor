@@ -14,7 +14,7 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
-#include <esp_wifi.h>
+#include <esp_efuse.h>
 
 #include "src/constants.h"
 #include "src/smart_scale.h"
@@ -26,11 +26,12 @@ void setup() {
     delay(500); // Wait for serial..
 
     // read MAC address to create 4 bytes ID
-    uint8_t mac[6];
-    esp_wifi_get_mac(WIFI_IF_STA, mac);
-
+    // Note that we use efuse to read MAC pre-Wifi init.
+    uint64_t m_le64 = ESP.getEfuseMac();
     char mac_id[5];
-    snprintf(mac_id, sizeof(mac_id), "%02x%02x", mac[4], mac[5]);
+    snprintf(mac_id, sizeof(mac_id), "%02x%02x",
+        (uint8_t) (m_le64 >> 16), // efuse returns little-endian uint64_t
+        (uint8_t) (m_le64 >> 24)); // i.e. m_le64[0] contains last octet.
 
     // e.g. with PREFIX="sensor.weight_", name="sensor.weight_aabb".
     String name = String(String(PREFIX)+String(mac_id));

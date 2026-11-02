@@ -51,6 +51,14 @@
 #endif
 
 /**
+ * You may force-enable calibration mode in .vscode/arduino.json.
+ * e.g.: `-DFORCE_CALIBRATION=1`
+ */
+#ifndef FORCE_CALIBRATION
+    #define FORCE_CALIBRATION 0
+#endif
+
+/**
  * Don't forget to change the Webhook URL in .vscode/arduino.json.
  * e.g.: `-DWEBHOOK_URL="http://homeassistant.local:8123/api/webhook/sensors"`
  */
@@ -75,7 +83,8 @@
 #endif
 
 constexpr bool ESP32HX711_DEBUG_ENABLED = (bool) DEBUG_MODE;
-constexpr bool ESP32HX711_QUIET_ENABLED = (bool) DEBUG_MODE;
+constexpr bool ESP32HX711_QUIET_ENABLED = (bool) QUIET_MODE;
+constexpr bool ESP32HX711_FORCE_CALIBRATION = (bool) FORCE_CALIBRATION;
 constexpr char ESP32HX711_WIFI_SSID[] = WIFI_SSID;
 constexpr char ESP32HX711_WIFI_PASS[] = WIFI_PASS;
 constexpr char URL_DIAGNOSTIC_REPORTS[] = WEBHOOK_URL;

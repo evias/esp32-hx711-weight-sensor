@@ -32,12 +32,7 @@ struct SensorReading {
 
 /// @brief The ToString method returns a JSON representation of the instance.
 inline String SensorReading::ToString() const {
-    String str("{                             \
-    \"timestamp\": " + String(read_at) + ",             \
-    \"name\": \"" + name.c_str() + "\",                 \
-    \"value\": \"" + value.c_str() + "\",               \
-    \"unit_of_measurement\": \"" + unit.c_str() + "\",  \
-}");
+    String str("{\"timestamp\": " + String(read_at) + ", \"name\": \"" + name.c_str() + "\", \"value\": \"" + value.c_str() + "\", \"unit_of_measurement\": \"" + unit.c_str() + "\"}");
     return str;
 }
 #endif

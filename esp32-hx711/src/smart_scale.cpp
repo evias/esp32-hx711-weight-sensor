@@ -46,6 +46,9 @@ void SmartScale::Setup()
         return ;
     }
 
+    sendDebugMessage(String("Waiting 3s..."));
+    delay(3000);
+
     // Configure HX711 pin
     bool ready = false;
     do {
@@ -71,8 +74,9 @@ void SmartScale::Setup()
     settings_.end();
 
     // Enter CALIBRATION mode
-    if (tare_offset == 0) {
-        sendDebugMessage(String("Entering CALIBRATION mode."));
+    if (true == ESP32HX711_FORCE_CALIBRATION || tare_offset == 0) {
+        sendDebugMessage(String("Entering CALIBRATION mode in 10s."));
+        delay(10000);
 
         hx711_module_.mod.tare(20); // average 20 readings as zero point
         tare_offset_ = hx711_module_.mod.get_offset();
@@ -107,7 +111,7 @@ void SmartScale::Setup()
     }
 
     setupWiFiConnection();
-    sendDebugMessage(String("SmartScale initialized"));
+    sendDebugMessage(String("SmartScale '" + name_ + "' initialized @ " + ip_address_ + " (" + mac_address_ + ")"));
 }
 
 /// @brief The OnLoop method produces raw readings from the sensor.
@@ -137,6 +141,7 @@ void SmartScale::OnLoop()
         if (webhook_enabled_ && should_send_batch) {
             // Consume the batch of readings (and clear batch_).
             String data = consumeBatch();
+            sendDebugMessage(String("Sending data batch: " + data));
 
             // Send over HTTP
             sendHTTPRequest(URL_DIAGNOSTIC_REPORTS, data.c_str());
@@ -281,7 +286,7 @@ void SmartScale::ensureWiFiConnected()
 
 /// @brief The consumeBatch method formats a JSON array with readings.
 /// @details CAUTION: Calling this method will clear the current batch.
-const String& SmartScale::consumeBatch()
+String SmartScale::consumeBatch()
 {
     String data("");
     for (int i = 0, m = batch_.size(); i < m; i++) {
@@ -306,13 +311,7 @@ bool SmartScale::sendHTTPRequest(const char* url, const char* data)
         return false;
     }
 
-    if (0 == batch_.size()) {
-        sendMessage(String("Cannot call webhook - batch is empty"), "WARN");
-        return false;
-    }
-
-    sendMessage(String("Sending HTTP POST request to:"), "INFO");
-    sendMessage(String(url), "INFO");
+    sendMessage(String("Sending HTTP POST (webhook) to " + String(url)));
 
     HTTPClient http;
     http.begin(url);
@@ -322,29 +321,28 @@ bool SmartScale::sendHTTPRequest(const char* url, const char* data)
     http.addHeader("Content-Type", "application/json");
     http.addHeader("X-Device", "biscuit-smart-scale");
 
-    String payload_json = "{                       \
-        \"ipv4\": \"" + ip_address_ + "\",         \
-        \"mac_addr\": \"" + mac_address_ + "\",    \
-        \"sensor\": \"" + name_ + "\",             \
-        \"data\": " + data + "                     \
-    }";
+    // ipv4: str, mac_addr: str, sensor: str, data: list
+    String payload_json = "{\"ipv4\": \"" + ip_address_ + "\", \"mac_addr\": \"" + mac_address_ + "\", \"sensor\": \"" + name_ + "\", \"data\": " + data + "}";
+    sendDebugMessage(String("Raw JSON payload for webhook call: ") + payload_json);
+
     int httpResponseCode = http.POST(payload_json);
     if (httpResponseCode > 0) {
-        sendMessage(String("HTTP Response code: " + httpResponseCode), "INFO");
+        String responseMsg = "HTTP Response code: " + String(httpResponseCode) + "\n";
 
         // Optionally read response body
         if (httpResponseCode == HTTP_CODE_OK) {
             String response = http.getString();
-            if (response.length() > 0 && response.length() < 200) {
-                sendMessage(String("  Response: " + response), "INFO");
+            if (response.length() > 0) {
+                responseMsg += "Response: " + response;
             }
         }
 
         http.end();
+        sendMessage(responseMsg);
         return true;
     } else {
-        sendMessage(String("[WARN] HTTP Error: " + http.errorToString(httpResponseCode)), "WARN");
         http.end();
+        sendMessage(String("HTTP Error: " + http.errorToString(httpResponseCode)), "WARN");
         return false;
     }
 }
